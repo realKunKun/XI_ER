@@ -11,6 +11,7 @@ public class MultithreadingAndRegex {
         int[] b={2,4,6,8,10};
         multithread(a,b);
     }
+    //多线程组还在理解，之前没有学过，下面这段代码来自CSDN。
     public static void multithread(int[] a,int[] b){
         Object object = new Object();
         Thread thread1 = new Thread(()  -> {
