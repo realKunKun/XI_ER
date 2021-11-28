@@ -28,7 +28,9 @@ public class MyCatCafe implements CatCafe{
         this.isBuyCat=false;
         this.isServeCustomer=false;
     }
-    public void BuyCat(double balance,Cat goal){
+
+/*
+   public void BuyCat(double balance,Cat goal){
        try {
            //Cat a=new BlackCat();
         UseInsufficientBalanceException su=new UseInsufficientBalanceException(balance,goal.price);
@@ -43,20 +45,47 @@ public class MyCatCafe implements CatCafe{
             this.isBuyCat=true;
         }
     }
-    public void ServeCustomer(Customer customer){
-    this.CustomerList.add(customer);
-    this.numOfrua=customer.rua;
-    int x=1;
-    while(numOfrua>=1){
-        Random ra=new Random();
-        Cat RandomElement=CatList.get(ra.nextInt(CatList.size()));
-        System.out.println("the "+x+" time message is");
-        System.out.println(RandomElement.ToString());
-        balance+=15;
-        numOfrua--;
-        x++;
-        this.isServeCustomer=true;
+*/
+public void BuyCat(double balance,Cat goal)throws InsufficientBalanceException{
+    try {
+        //Cat a=new BlackCat();
+        if(this.balance<goal.price){
+            throw new InsufficientBalanceException("Balance:"+this.balance);
+        }
     }
+    catch(InsufficientBalanceException wrong){
+        System.out.println(wrong.getMessage()+"which is not enough to buy" );
+    }
+    if (balance >= goal.price) {
+        this.CatList.add(goal);
+        this.balance=this.balance-goal.price;
+        this.isBuyCat=true;
+    }
+}
+    public void ServeCustomer(Customer customer)throws CatNotFoundException{
+        try {
+            if(this.CatList.size()==0){
+                throw new CatNotFoundException("there is not enough cat ruaed in the MyCatCafe");
+            }
+        }
+        catch(CatNotFoundException wrong){
+            System.out.println(wrong.getMessage()+"which is not enough to buy" );
+        }
+        if(this.CatList.size()!=0) {
+            this.CustomerList.add(customer);
+            this.numOfrua = customer.rua;
+            int x = 1;
+            while (numOfrua >= 1) {
+                Random ra = new Random();
+                Cat RandomElement = CatList.get(ra.nextInt(CatList.size()));
+                System.out.println("the " + x + " time message is");
+                System.out.println(RandomElement.ToString());
+                balance += 15;
+                numOfrua--;
+                x++;
+                this.isServeCustomer = true;
+            }
+        }
     };
     public void closeCatCafe(LocalDate date){
         //输出顾客信息
