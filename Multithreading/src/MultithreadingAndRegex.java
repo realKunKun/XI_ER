@@ -11,17 +11,17 @@ public class MultithreadingAndRegex {
         int[] b={2,4,6,8,10};
         multithread(a,b);
     }
-    //多线程组还在理解，之前没有学过，下面这段代码来自CSDN。
+    //多线程组还在理解，之前没有学过，下面这段代码模仿写的，来自CSDN。
     public static void multithread(int[] a,int[] b){
         Object object = new Object();
         Thread thread1 = new Thread(()  -> {
-            synchronized(object){//使用notify和wait时，必须要选获取到锁
+            synchronized(object){//使用notify和wait时，必须要选获取到锁,定义一个同步块
                 for (int i = 0; i < a.length; i++) {
                     try {
-                        System.out.print(a[i]);
-                        object.notify();
-                        object.wait();
-                    } catch (InterruptedException e) {
+                        System.out.println("线程1: "+a[i]);
+                        object.notify();//唤醒？
+                        object.wait();//临时释放锁，并阻塞当前线程
+                    } catch (InterruptedException e) {//这里有一段异常抛出代码，但是不太清楚要怎么测试异常
                         e.printStackTrace();
                     }
                 }
@@ -32,7 +32,7 @@ public class MultithreadingAndRegex {
             synchronized(object){
                 for (int i = 0; i < b.length; i++) {
                     try {
-                        System.out.print(b[i]);
+                        System.out.println("线程2: "+b[i]);
                         object.notify();
                         object.wait();
                     } catch (InterruptedException e) {
@@ -46,6 +46,7 @@ public class MultithreadingAndRegex {
         thread2.start();
             }
     public static boolean EMailRegex(String EMail){
+        //正则表达式是自己写的
         boolean result=false;
         if(EMail.matches(".*@.*\\.com")==true){
             result=true;
